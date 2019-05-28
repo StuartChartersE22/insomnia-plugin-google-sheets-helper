@@ -24,11 +24,13 @@ Request JSON:
 }
 ```
 Corresponding sheet layout:
+```
 | Top   |Child1 | String        |       |
 |       |Child2 | GrandChild21  |String |
 |       |       | GrandChild22  |String |
 |       |Child3 | GrandChild31  |       |
 |       |       | GrandChild32  |       |
+```
 
 The end point is automatically generated from the Sheet's ID. It will be the [Google spreadsheets.values.update end point](https://developers.google.com/sheets/api/reference/rest/v4/spreadsheets.values/update).
 
