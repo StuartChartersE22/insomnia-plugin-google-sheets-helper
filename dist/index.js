@@ -10,6 +10,10 @@ function requestHook(context) {
     if (!sheet_config) {
         return;
     }
+    const initial_request_url = initial_request.getUrl();
+    if (initial_request_url !== "http://g-sheet-request") {
+        return;
+    }
     const sheet_id = sheet_config["sheet-id"];
     const body = initial_request.getBodyText();
     const json_body = JSON.parse(body);
@@ -17,8 +21,8 @@ function requestHook(context) {
         logger_1.log(`Body needs to be in a JSON format. Unable to parse`)
         return;
     }
-    const formatted_body = request_formatter.format_body(jsonBody);
-    logger_1.log(`Formatted body: ${formatted_body}`)
+    const formatted_body = request_formatter.format_body(json_body, [0,0]);
+    logger_1.log(`Formatted body: ${JSON.stringify(formatted_body)}`)
     request_formatter.format_request(sheet_id, formatted_body, initial_request);
 }
 exports.requestHooks = [requestHook];

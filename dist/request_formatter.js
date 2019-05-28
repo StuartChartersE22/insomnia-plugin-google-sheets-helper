@@ -1,39 +1,38 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 
-function format_body(body) {
-    var formatted_body = [[]];
-    Object.entities(body).forEach(([key,value]) => {
-        formatted_body[0].push(key);
-        if (value instanceof []) {
-            formatted_body = add_array_value(value, formatted_body);
-        } else if (value instanceof {}) {
-            formatted_body = add_dict_value(value, formatted_body);
+function format_json(json, position, formatted_json = [[]]) {
+    const column = position[0]
+    const row = position[1]
+    const value_column = column + 1
+    if ((value_column) === formatted_json.length){
+        var row_array = [];
+        while (row_array.length < row){
+            row_array.push(``);
+        }
+        formatted_json.push(row_array);
+    }
+    Object.entries(json).forEach(([key, value]) => {
+        while (formatted_json[column].length < formatted_json[value_column].length){
+            formatted_json[column].push(``);
+        }
+        formatted_json[column].push(key);
+        if (value instanceof Array) {
+            formatted_json = format_array(value, position, formatted_json); 
+        } else if (value instanceof Map) {
+            formatted_json = format_json(value, [value_column, row], formatted_json);
         } else {
-            formatted_body.push([value]);
+            formatted_json[value_column].push([value]);
         }
     });
-    return formatted_body;
+    return formatted_json;
 }
 
-function add_array_value(value, formatted_body){
-    while(formatted_body[0].length < value.length) {
-        formatted_body[0].push(``);
-    }
-    formatted_body.push(value);
-    return formatted_body;
+function format_array(array, position, formatted_body){
+
 }
 
-function add_dict_value(value, formatted_body){
-    const formatted_child = format_body(value);
-    while(formatted_body[0].length < formatted_child.length) {
-        formatted_body[0].push(``);
-    }
-    formatted_body.push(formatted_child)
-    return formatted_body;
-}
-
-exports.format_body = format_body;
+exports.format_body = format_json;
 
 function format_request(sheet_id, formatted_body, initial_request) {
     initial_request.setUrl(`https://sheets.googleapis.com/v4/spreadsheets/${sheet_id}/values/A:Z?valueInputOption=USER_ENTERED`)
