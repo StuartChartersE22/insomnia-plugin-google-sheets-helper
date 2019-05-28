@@ -18,6 +18,7 @@ function requestHook(context) {
         return;
     }
     const formatted_body = request_formatter.format_body(jsonBody);
+    logger_1.log(`Formatted body: ${formatted_body}`)
     request_formatter.format_request(sheet_id, formatted_body, initial_request);
 }
 exports.requestHooks = [requestHook];
