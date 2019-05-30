@@ -52,8 +52,13 @@ function format_array(array, position, formatted_json){
 }
 
 function format_request(sheet_id, formatted_body, initial_request) {
-    initial_request.setUrl(`https://sheets.googleapis.com/v4/spreadsheets/${sheet_id}/values/A:Z?valueInputOption=USER_ENTERED`)
-    initial_request.setBodyText(JSON.stringify(formatted_body));
+    var final_body = new Map;
+    const sheet_column_range = `A:${String.fromCharCode(96 + formatted_body.length)}`;
+    initial_request.setUrl(`https://sheets.googleapis.com/v4/spreadsheets/${sheet_id}/values/${sheet_column_range}?valueInputOption=USER_ENTERED`);
+    final_body["majorDimension"] = "COLUMNs";
+    final_body["range"] = sheet_column_range;
+    final_body["values"] = formatted_body;
+    initial_request.setBodyText(JSON.stringify(final_body));
 }
 
 exports.format_body = format_json;
