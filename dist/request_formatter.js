@@ -16,6 +16,7 @@ function format_json(json, position, formatted_json = [[]]) {
     Object.entries(json).forEach(([key, value]) => {
         while (formatted_json[column].length < formatted_json[value_column].length){
             formatted_json[column].push(``);
+            position[1] ++
         }
         formatted_json[column].push(key);
         formatted_json = value_type_formatter_selection(value, position, formatted_json)
@@ -50,11 +51,10 @@ function format_array(array, position, formatted_json){
     return formatted_json;
 }
 
-exports.format_body = format_json;
-
 function format_request(sheet_id, formatted_body, initial_request) {
     initial_request.setUrl(`https://sheets.googleapis.com/v4/spreadsheets/${sheet_id}/values/A:Z?valueInputOption=USER_ENTERED`)
     initial_request.setBodyText(JSON.stringify(formatted_body));
 }
 
+exports.format_body = format_json;
 exports.format_request = format_request;
