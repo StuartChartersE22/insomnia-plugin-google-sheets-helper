@@ -10,6 +10,7 @@ function format_json(json, position, formatted_json = [[]]) {
         formatted_json.push([]);
     }
     while (formatted_json[value_column].length < row){
+        // logger_1.log(`pushing cell into column ${value_column}`)
         formatted_json[value_column].push(``);
     }
     Object.entries(json).forEach(([key, value]) => {
@@ -55,7 +56,12 @@ function format_array(array, position, formatted_json){
 
 function format_request(sheet_id, formatted_body, initial_request) {
     var final_body = new Map;
-    const sheet_column_range = `A:${String.fromCharCode(96 + formatted_body.length)}`;
+    const minor_letter = String.fromCharCode(96 + (formatted_body.length%96));
+    var major_letter = '';
+    if (Math.floor(formatted_body.length/96) !== 0){
+        major_letter = String.fromCharCode(95 + (Math.floor(formatted_body.length/96)))
+    }
+    const sheet_column_range = `A:${major_letter}${minor_letter}`;
     initial_request.setUrl(`https://sheets.googleapis.com/v4/spreadsheets/${sheet_id}/values/${sheet_column_range}?valueInputOption=USER_ENTERED`);
     final_body["majorDimension"] = "COLUMNS";
     final_body["range"] = sheet_column_range;
