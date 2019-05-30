@@ -18,20 +18,36 @@ function format_json(json, position, formatted_json = [[]]) {
             formatted_json[column].push(``);
         }
         formatted_json[column].push(key);
-        logger_1.log(`Value type: ${typeof value}`)
-        if (value instanceof Array) {
-            formatted_json = format_array(value, position, formatted_json); 
-        } else if (value instanceof Object) {
-            formatted_json = format_json(value, [value_column, row], formatted_json);
-        } else {
-            formatted_json[value_column].push([value]);
-        }
+        formatted_json = value_type_formatter_selection(value, position, formatted_json)
+        position[1] ++
     });
     return formatted_json;
 }
 
-function format_array(array, position, formatted_body){
+function value_type_formatter_selection (value, position, formatted_json) {
+    const column = position[0]
+    const row = position[1]
+    const value_column = column + 1
+    if (value instanceof Object) {
+        logger_1.log(`value type of: ${typeof value.length}`)
+        if (typeof value.length === "number"){
+            logger_1.log(`array`)
+            formatted_json = format_array(value, position, formatted_json)
+        } else {
+            logger_1.log(`json`)
+            formatted_json = format_json(value, [value_column, row], formatted_json);
+        }
+    } else {
+        formatted_json[value_column].push(value);
+    }
+    return formatted_json;
+}
 
+function format_array(array, position, formatted_json){
+    array.forEach((value) => {
+        formatted_json = value_type_formatter_selection (value, position, formatted_json)
+    })
+    return formatted_json;
 }
 
 exports.format_body = format_json;
