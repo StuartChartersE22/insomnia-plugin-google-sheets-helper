@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const logger_1 = require("./logger");
 
 function format_json(json, position, formatted_json = [[]]) {
     const column = position[0]
@@ -17,9 +18,10 @@ function format_json(json, position, formatted_json = [[]]) {
             formatted_json[column].push(``);
         }
         formatted_json[column].push(key);
+        logger_1.log(`Value type: ${typeof value}`)
         if (value instanceof Array) {
             formatted_json = format_array(value, position, formatted_json); 
-        } else if (value instanceof Map) {
+        } else if (value instanceof Object) {
             formatted_json = format_json(value, [value_column, row], formatted_json);
         } else {
             formatted_json[value_column].push([value]);
