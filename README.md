@@ -38,13 +38,13 @@ Corresponding sheet layout:
 ----------------------------------------
 ```
 
-The end point must be set to "g-sheet-request" for the intended request to be picked up. The actual request URL is automatically generated from the Sheet's ID. It will be the [Google spreadsheets.values.update end point](https://developers.google.com/sheets/api/reference/rest/v4/spreadsheets.values/update).
+The end point must be set to PUT "g-sheet-request" for the intended request to be picked up. The actual request URL is automatically generated from the Sheet's ID. It will be the [Google spreadsheets.values.update end point](https://developers.google.com/sheets/api/reference/rest/v4/spreadsheets.values/update).
 
 ```
 {
     "G_SHEET_HELPER": {
         "sheet-id": "String",
-        "top-left-coord": "A1"
+        "top-left-coord": "A1" (optional)
     }
 }
 ```
