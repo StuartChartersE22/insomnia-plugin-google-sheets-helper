@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const logger_1 = require("./logger");
-const a1_notation_converter = require("./a1_notation_converter");
 
 function format_json(json, position, formatted_json = [[]]) {
     const column = position[0]
@@ -57,10 +56,9 @@ function format_array(array, position, formatted_json){
 
 function format_request(sheet_id, formatted_body, initial_request, top_left_a1) {
     var final_body = new Map;
-    const top_left_coord = a1_notation_converter.a1_to_coord(top_left_a1);
-    logger_1.log(`top_left_coord`)
-    const bottom_right_coord = [formatted_body.length - 1 + top_left_coord[0], formatted_body[0].length -1 + top_left_coord];
-    const sheet_column_range = `${top_left_a1}:${a1_notation_converter.coord_to_a1(bottom_right_coord)}`;
+    const top_left_a1_array = top_left_a1.split(``);
+    const top_row = top_left_a1_array[top_left_a1_array.length - 1];
+    const sheet_column_range = `${top_left_a1}:zz${formatted_body[0].length -1 + top_row}`;
     initial_request.setUrl(`https://sheets.googleapis.com/v4/spreadsheets/${sheet_id}/values/${sheet_column_range}?valueInputOption=USER_ENTERED`);
     final_body["majorDimension"] = "COLUMNS";
     final_body["range"] = sheet_column_range;
