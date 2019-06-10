@@ -1,6 +1,6 @@
 {
   "name": "insomnia-plugin-google-sheets-helper",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "An Insomnia plugin to help making posting to Google Sheets' API easier",
   "main": "dist/index.js",
   "files": ["dist"],
